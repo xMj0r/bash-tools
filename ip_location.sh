@@ -12,9 +12,9 @@ url="ip.guide/"
 ip="$1"
 curl -sL GET $url$ip > data.json
 
-provider=$(cat data.json | grep "name" | sed 's/[name":,\t]//g' | awk '{$1=$1;print}')
-country=$(cat data.json | grep "location" -A 2 | grep "country" | sed 's/[country":,]//g' | awk '{$1=$1; print}')
-city=$(cat data.json | grep "city" | sed 's/[city:",]//g' | awk '{$1=$1; print}')
+provider=$(cat data.json | grep "name" | sed -e 's/[":,\t]//g' -e 's/name//' | awk '{$1=$1;print}')
+country=$(cat data.json | grep "location" -A 2 | grep "country" | sed 's/[":,]//g' | awk '{print $NF}')
+city=$(cat data.json | grep "city" | sed 's/[:",]//g' | awk '{print $NF}')
 lat=$(cat data.json | grep "latitude" | awk '{print $NF}' | sed 's/,//')
 long=$(cat data.json | grep "longitude" | awk '{print $NF}')
 
